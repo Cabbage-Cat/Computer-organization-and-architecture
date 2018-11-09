@@ -172,3 +172,159 @@ DISK:
 - Transfer time: access time + the time that read data from the disk.
 
 ![DISK3](2018-11-01-23-09-37.png)
+
+## Optical Disks
+
+### CD-ROM
+
+![CD-ROM](2018-11-09-16-16-15.png)
+
+- written from the center to the outside edge
+- using a single spiraling track
+
+CD-ROM DATA SECTOR Formats:
+
+![CDSectorFormats](2018-11-09-16-19-14.png)
+
+- Mode 0 and Mode 2 are using to set mp3 ,mode 1 to set data.
+- Mode1 有校验和修正功能.
+- Most CD operate at constant linear velocity(CLV)(线速度相同)
+
+### DVD
+
+DVDs rotate at about three times the speed of CDs.
+
+## Magnetic Tape(磁带)
+
+Magnetic tape is the oldest and most cost-effective of all mass-storage devices.
+
+- Data was usually written in nine vertical tracks.
+
+Serpentine(蛇形) recording is used in digital linear tape(DLT) and Quarter inch cartridge(QIC) tape systems.
+
+![Serpentine](2018-11-09-16-39-38.png)
+
+![DAT](2018-11-09-16-39-55.png)
+
+## RAID
+
+In RAID,data is stored acrosss many disks,with extra disks added to the array to provide error correction.
+
+- Types(Levels) of RAID:0,1,2,3,4,5,6,hybrid systems.
+
+### RAID 0
+
+RAID Level 0,also known as drive spanning,provides improved performance,but no redundancy.(效率最高)
+
+Segments can be as small as a single bit,as in RAID-0,or blocks of a specific size.
+
+![RAID0](2018-11-09-16-45-42.png)
+
+- No redundancy,the best performance,and very inexpensive.
+- The problem:low reliability,no-fault tolenrance(无容错率)
+
+![RAID0-2](2018-11-09-16-47-11.png)
+
+RAID-0 is recommended for non-critical data(or is backed up) that requires high speed reads and writes,and low cost,usually used in applications such as video or image editing.
+
+### RAID 1
+
+RAID Level 1,also known as **disk mirroring**,provides 100% redundancy,and good performance.(完全备份)
+
+![RAID1-0](2018-11-09-16-49-29.png)
+
+- RAID1 provides the best failure protection
+- writes is slower than that of RAID-0
+- reads are much faster(twice copy)
+
+RAID-1 is best suited for transaction-oriented,high-availability environments,high-fault tolerance.(面向事物,高可用性环境,高容错)
+
+### RAID 2
+
+A RAID-2 configuration consists of a set of data drives,and a set of Hamming code drives.
+
+- Hamming code drives provide error correction for the data drives.
+- RAID 2 performance is poor and **the cost is relatively high**.
+
+![RAID2-0](2018-11-09-16-54-27.png)
+
+- RAID-2 writes **one bit** per strip.
+- requires **at least 8 surfaces** to accommodate the data.
+- If any **one** of the drivesa in the array fails,the Hamming code words can be used to reconstruct the failed drive.
+- Hamming code generation is time-consuming,thus RAID-2 is too slow for most places.
+- RAID-2 forms the theoretical bridge between RAID-1 and RAID-3,both of which are used in the real world.
+
+### RAID 3
+
+RAID-3 stripes bits across a set of data drives and provides a separate disk for parity.(数据交错分配,但只用一个驱动器来进行奇偶校验)
+
+![RAID3-0](2018-11-09-17-02-26.png)
+
+The parity calculation can be done quickly in hardware.using XOR(异或) on each data bit.
+
+![RAID3-1](2018-11-09-17-03-40.png)
+
+A failed drive can be reconstructed using the same calculation.
+
+![RAID3-2](2018-11-09-17-04-41.png)
+
+- RAID-3 more economical than either RAID-1 or RAID-2.
+- not well suited for transaction-oriented applications.
+- most useful for environments where **large blocks of data would be read or written.** Such as with image or video processing.
+
+### RAID 4
+
+RAID-4 是另一个理论上的RAID等级.
+
+- RAID Level 4 is **like adding parity disks to RAID 0.**
+- Data is written in blocks across the data disks,and a parity block is written to the redundant drive.
+
+![RAID4-0](2018-11-09-17-09-21.png)
+
+RAID4奇偶校验会产生写入瓶颈.(假设4写入完,奇偶校验位正更新,1有新的写入命令,只能等待)
+
+### RAID 5
+
+RAID-5 is RAID 4 with distributed parity.(将奇偶校验位分散)
+
+- RAID-5 requires the most complex disk controller
+- RAID-5 offers the best protection for the least cost
+- RAID-5 is used in many commercial systems.(servers,email,database servers..)
+
+Most of the RAID systems just discussed can tolerate **at most one disk failure at a time.**
+
+Systems that require high availability must be able to tolerate more than one concurrent drive failure.
+
+### RAID 6
+
+RAID-6 carries **two levels of error protection** over striped data:Reed-Soloman and parity.
+
+![RAID6-0](2018-11-09-18-43-40.png)
+
+Keep in mind that a higher RAID level does not necessarily mean a “better” RAID level.It all depends upon the needs of the applications that use the disks.
+
+## Data Compression
+
+Data compression is important to storage systems because it allows more bytes to be packed into a given storage medium than when the data is uncompressed.
+
+Compression also reduces Internet file transfer time.
+
+![Data Compression](2018-11-09-18-47-18.png)
+
+Compression is achieved by **removing data redundancy while preserving information content.**
+
+**The information content** of a group of bytes is its entropy(熵)
+
+- Data with low entropy permit a larger compression ratio than data with high entropy.
+
+[信息熵](https://blog.csdn.net/taoqick/article/details/72852255)
+
+The entropy of the entire message is **the sum of the individual symbol entropies**.
+
+$$\sum -P(x_i)*\log_2{P(x_i)}$$
+
+The average redundancy for each characeter in a message of length l is given by:
+
+$$P(x)*l_i - \sum -P(x_i)*\log_2{P(x_i)}$$
+
+![Data Compression 2](2018-11-09-19-03-55.png)
